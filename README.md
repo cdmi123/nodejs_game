@@ -51,6 +51,45 @@ Example create request:
 
 `name` and `email` are required; `email` must be unique. `age` is optional and must be a non-negative number. Successful responses return the resource in a `data` property; errors return an `error` property and may include validation `details`.
 
+## Image endpoints
+
+Images are stored as binary data in MongoDB's `Image` collection. Upload a JPEG, PNG, GIF, or WebP image of up to 5 MB:
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `POST` | `/image` | Upload an image file or Base64 image |
+| `GET` | `/image/:id` | Retrieve an uploaded image |
+
+### Upload a selected file in Postman
+
+1. Select **POST** and enter `http://localhost:3000/image`.
+2. Open **Body** and choose **form-data**.
+3. Add a row with key `image`, change its type from **Text** to **File**, and select your image.
+4. Send the request. Let Postman set the multipart `Content-Type` header automatically.
+
+The API stores the selected image's binary data directly in MongoDB; it does not need a Base64 conversion for file uploads.
+
+### Upload Base64 JSON
+
+Alternatively, send a Base64 data URL:
+
+```json
+{
+  "image": "data:image/png;base64,<base64-data>"
+}
+```
+
+Or provide the Base64 value and content type separately:
+
+```json
+{
+  "contentType": "image/png",
+  "image": "<base64-data>"
+}
+```
+
+The upload response includes the image ID and retrieval URL. The API checks that the decoded bytes match the declared image type.
+
 ## Project structure
 
 ```text

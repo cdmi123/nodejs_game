@@ -5,7 +5,8 @@ const errorHandler = require("./middleware/error.middleware");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "7mb" }));
+app.use("/image", require("./routes/image.routes"));
 app.use("/", userRoutes);
 
 app.use((req, res) => {
